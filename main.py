@@ -1,6 +1,6 @@
 import requests
 from flask import Flask, render_template, jsonify
-from datetime import datetime
+from datetime import datetime, timedelta # timedelta যোগ করা হয়েছে
 import os
 
 app = Flask(__name__)
@@ -34,7 +34,12 @@ def api_fetch():
     signals = get_signals()
     if not signals: return jsonify({"status": "error"})
     
-    now_str = datetime.now().strftime("%H:%M")
+    # Render সার্ভারকে বাংলাদেশের সময়ে (+6 hours) সেট করা
+    # এটি না করলে সার্ভার লন্ডনের সময় ধরে সিগন্যাল খুঁজবে
+    now_utc = datetime.utcnow()
+    now_bd = now_utc + timedelta(hours=6) 
+    now_str = now_bd.strftime("%H:%M")
+    
     upcoming = [s for s in signals if s['time'] > now_str]
     
     if upcoming:
