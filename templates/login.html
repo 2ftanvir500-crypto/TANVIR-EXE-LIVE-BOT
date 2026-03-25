@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TANVIR EXE | QUOTEX SIGNAL GENERATOR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-neon: #00fff2;
+      --bg-dark: #020205;
+      --card-bg: rgba(15, 15, 20, 0.8);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { min-height: 100vh; background-color: var(--bg-dark); display: flex; justify-content: center; align-items: center; overflow: hidden; color: #fff; }
+    .bg-mesh { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 10% 10%, rgba(0, 255, 242, 0.1) 0%, transparent 50%), radial-gradient(circle at 90% 90%, rgba(0, 114, 255, 0.1) 0%, transparent 50%); filter: blur(60px); }
+    #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; }
+    .login-container { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 35px 25px; width: 90%; max-width: 380px; z-index: 10; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); margin: 20px; }
+    .login-header { text-align: center; margin-bottom: 30px; }
+    .login-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, #fff, var(--primary-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
+    .login-header p { color: rgba(255, 255, 255, 0.5); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group input { width: 100%; padding: 15px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #fff; font-size: 16px; transition: var(--transition); outline: none; }
+    .form-group input:focus { border-color: var(--primary-neon); background: rgba(0, 255, 242, 0.03); box-shadow: 0 0 15px rgba(0, 255, 242, 0.1); }
+    .login-button { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary-neon), #00c3ff); border: none; border-radius: 12px; color: #000; font-weight: 800; font-size: 0.9rem; letter-spacing: 1.5px; cursor: pointer; transition: var(--transition); margin-top: 10px; }
+    .login-button:active { transform: scale(0.98); }
+    .forgot-password { text-align: center; margin-top: 20px; }
+    .forgot-password a { color: rgba(255, 255, 255, 0.3); text-decoration: none; font-size: 0.75rem; }
+    #loadingOverlay { position: fixed; inset: 0; background: rgba(2, 2, 5, 0.95); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+    .loader-ring { width: 50px; height: 50px; border: 3px solid rgba(0, 255, 242, 0.1); border-top: 3px solid var(--primary-neon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div id="particles-js"></div>
+<div id="loadingOverlay">
+  <div class="loader-ring"></div>
+  <p style="margin-top:15px; font-size: 0.6rem; color: var(--primary-neon); letter-spacing: 3px;">CONNECTING...</p>
+</div>
+<div class="login-container">
+  <div class="login-header">
+    <h1>TANVIR EXE</h1>
+    <p>QUOTEX SIGNAL GENERATOR</p>
+  </div>
+  <form method="POST" action="/" onsubmit="showLoading()">
+    <div class="form-group">
+      <input type="text" name="username" placeholder="Enter Your Username" required autocomplete="off">
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" placeholder="Enter Your Password" required>
+    </div>
+    <button type="submit" class="login-button">LOG IN</button>
+    <div class="forgot-password">
+      <a href="#">RECOVER ACCESS</a>
+    </div>
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+  particlesJS('particles-js', { particles: { number: { value: 40, density: { enable: true, value_area: 800 } }, color: { value: '#00fff2' }, opacity: { value: 0.3 }, size: { value: 1.5 }, line_linked: { enable: true, distance: 120, color: '#00fff2', opacity: 0.1 }, move: { enable: true, speed: 0.6 } }, interactivity: { events: { onhover: { enable: false }, onclick: { enable: true, mode: 'push' } } }, retina_detect: true });
+  function showLoading() { document.getElementById("loadingOverlay").style.display = "flex"; }
+</script>
+</body>
+</html>
