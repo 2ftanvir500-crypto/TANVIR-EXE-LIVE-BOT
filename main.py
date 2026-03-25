@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, render_template, jsonify
-from datetime import datetime, timedelta # timedelta যোগ করা হয়েছে
+from datetime import datetime
+import pytz # timezone হ্যান্ডেল করার জন্য
 import os
 
 app = Flask(__name__)
@@ -34,10 +35,9 @@ def api_fetch():
     signals = get_signals()
     if not signals: return jsonify({"status": "error"})
     
-    # Render সার্ভারকে বাংলাদেশের সময়ে (+6 hours) সেট করা
-    # এটি না করলে সার্ভার লন্ডনের সময় ধরে সিগন্যাল খুঁজবে
-    now_utc = datetime.utcnow()
-    now_bd = now_utc + timedelta(hours=6) 
+    # সরাসরি বাংলাদেশের সময় নেওয়া (Force Asia/Dhaka)
+    tz = pytz.timezone('Asia/Dhaka')
+    now_bd = datetime.now(tz)
     now_str = now_bd.strftime("%H:%M")
     
     upcoming = [s for s in signals if s['time'] > now_str]
