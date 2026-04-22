@@ -1,66 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TANVIR EXE | QUOTEX SIGNAL GENERATOR</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-neon: #00fff2;
-      --bg-dark: #020205;
-      --card-bg: rgba(15, 15, 20, 0.8);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { min-height: 100vh; background-color: var(--bg-dark); display: flex; justify-content: center; align-items: center; overflow: hidden; color: #fff; }
-    .bg-mesh { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 10% 10%, rgba(0, 255, 242, 0.1) 0%, transparent 50%), radial-gradient(circle at 90% 90%, rgba(0, 114, 255, 0.1) 0%, transparent 50%); filter: blur(60px); }
-    #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; }
-    .login-container { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 35px 25px; width: 90%; max-width: 380px; z-index: 10; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); margin: 20px; }
-    .login-header { text-align: center; margin-bottom: 30px; }
-    .login-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, #fff, var(--primary-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
-    .login-header p { color: rgba(255, 255, 255, 0.5); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group input { width: 100%; padding: 15px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #fff; font-size: 16px; transition: var(--transition); outline: none; }
-    .form-group input:focus { border-color: var(--primary-neon); background: rgba(0, 255, 242, 0.03); box-shadow: 0 0 15px rgba(0, 255, 242, 0.1); }
-    .login-button { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary-neon), #00c3ff); border: none; border-radius: 12px; color: #000; font-weight: 800; font-size: 0.9rem; letter-spacing: 1.5px; cursor: pointer; transition: var(--transition); margin-top: 10px; }
-    .login-button:active { transform: scale(0.98); }
-    .forgot-password { text-align: center; margin-top: 20px; }
-    .forgot-password a { color: rgba(255, 255, 255, 0.3); text-decoration: none; font-size: 0.75rem; }
-    #loadingOverlay { position: fixed; inset: 0; background: rgba(2, 2, 5, 0.95); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
-    .loader-ring { width: 50px; height: 50px; border: 3px solid rgba(0, 255, 242, 0.1); border-top: 3px solid var(--primary-neon); border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TANVIR EXE | ADMIN LOGIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030304;
+            background-image: 
+                radial-gradient(circle at 50% 120%, #3d0b0b 0%, #030304 60%),
+                radial-gradient(circle at 10% 10%, #1a0505 0%, transparent 20%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 380px;
+            background: rgba(15, 10, 10, 0.98);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            border-top: 3px solid #ff4757;
+            border-radius: 12px;
+            padding: 45px 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            position: relative;
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            text-shadow: 0 0 15px rgba(255, 71, 87, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: #ff4757;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 1.5px;
+        }
+
+        .input-box {
+            width: 100%;
+            background: rgba(20, 10, 10, 0.9);
+            border: 1px solid #441111;
+            padding: 15px;
+            color: #fff;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            transition: 0.3s;
+        }
+
+        .input-box:focus {
+            border-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #ff6b81;
+            box-shadow: 0 5px 20px rgba(255, 71, 87, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: -350px;
+            background: #0f0a0a;
+            color: #fff;
+            border-left: 4px solid #ff4757;
+            padding: 18px 30px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3000;
+        }
+
+        #notification.show { right: 20px; }
+
+        .scan-line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 71, 87, 0.6), transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scanning 3s linear infinite;
+        }
+
+        @keyframes scanning {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+    </style>
 </head>
 <body>
-<div class="bg-mesh"></div>
-<div id="particles-js"></div>
-<div id="loadingOverlay">
-  <div class="loader-ring"></div>
-  <p style="margin-top:15px; font-size: 0.6rem; color: var(--primary-neon); letter-spacing: 3px;">CONNECTING...</p>
+
+<div id="notification">Invalid Credentials</div>
+
+<div class="login-card">
+    <div class="scan-line"></div>
+    <h1 class="title">ADMIN ACCESS</h1>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username" class="input-box" placeholder="Enter User Name" required>
+        </div>
+        <div class="form-group">
+            <label>Secret Password</label>
+            <input type="password" id="password" class="input-box" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="login-btn">AUTHORIZE</button>
+    </form>
 </div>
-<div class="login-container">
-  <div class="login-header">
-    <h1>TANVIR EXE</h1>
-    <p>QUOTEX SIGNAL GENERATOR</p>
-  </div>
-  <form method="POST" action="/" onsubmit="showLoading()">
-    <div class="form-group">
-      <input type="text" name="username" placeholder="Enter Your Username" required autocomplete="off">
-    </div>
-    <div class="form-group">
-      <input type="password" name="password" placeholder="Enter Your Password" required>
-    </div>
-    <button type="submit" class="login-button">LOG IN</button>
-    <div class="forgot-password">
-      <a href="#">RECOVER ACCESS</a>
-    </div>
-  </form>
-</div>
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
 <script>
-  particlesJS('particles-js', { particles: { number: { value: 40, density: { enable: true, value_area: 800 } }, color: { value: '#00fff2' }, opacity: { value: 0.3 }, size: { value: 1.5 }, line_linked: { enable: true, distance: 120, color: '#00fff2', opacity: 0.1 }, move: { enable: true, speed: 0.6 } }, interactivity: { events: { onhover: { enable: false }, onclick: { enable: true, mode: 'push' } } }, retina_detect: true });
-  function showLoading() { document.getElementById("loadingOverlay").style.display = "flex"; }
+(function () {
+  'use strict';
+  function isEditableTarget(el) {
+    if (!el || el.nodeType !== 1) return false;
+    const tag = el.tagName;
+    if (tag === 'TEXTAREA') return true;
+    if (tag === 'INPUT') {
+      const t = (el.type || '').toLowerCase();
+      return !['button', 'checkbox', 'radio', 'submit', 'reset', 'file', 'hidden'].includes(t);
+    }
+    return el.isContentEditable === true;
+  }
+  function stop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+  var DEVTOOL_CODES = { KeyI: 1, KeyJ: 1, KeyC: 1, KeyK: 1, KeyM: 1, KeyP: 1, KeyE: 1 };
+  document.addEventListener('keydown', function (e) {
+      if (isEditableTarget(e.target)) {
+        var k = (e.key || '').toLowerCase();
+        if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a'].includes(k)) return;
+      }
+      if (e.key === 'F12' || e.keyCode === 123) return stop(e);
+      if (e.shiftKey && (e.key === 'F10' || e.code === 'F10')) return stop(e);
+      var mod = e.ctrlKey || e.metaKey;
+      var code = e.code || '';
+      if (mod && e.shiftKey && !e.altKey && DEVTOOL_CODES[code]) return stop(e);
+      if (code === 'Backquote') {
+        if (e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) return stop(e);
+        if (e.ctrlKey && !e.metaKey && e.shiftKey) return stop(e);
+      }
+      if (e.metaKey && e.altKey) {
+        if (['KeyI', 'KeyJ', 'KeyC', 'KeyU'].indexOf(code) !== -1) return stop(e);
+      }
+      if (mod && !e.shiftKey && !e.altKey) {
+        if (code === 'KeyU' || code === 'KeyS') return stop(e);
+      }
+      if (mod && e.shiftKey && code === 'KeyU') return stop(e);
+    }, true);
+  document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }, true);
+  document.addEventListener('mousedown', function (e) {
+      if (e.button === 2) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+})();
+
+    const loginForm = document.getElementById('loginForm');
+    function showNotify(msg) {
+        const n = document.getElementById('notification');
+        n.innerText = msg;
+        n.classList.add('show');
+        setTimeout(() => n.classList.remove('show'), 3000);
+    }
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        
+        fetch('/admin_login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                return response.text();
+            }
+        })
+        .then(html => {
+            if (html && html.includes('Invalid')) {
+                showNotify("Invalid Username or Password");
+            }
+        })
+        .catch(error => {
+            showNotify("Login Error");
+        });
+    });
 </script>
 </body>
 </html>

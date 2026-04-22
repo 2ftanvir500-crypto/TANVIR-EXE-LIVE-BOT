@@ -1,205 +1,617 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>QUOTEX SIGNAL BOT | TANVIR EXE</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --primary-neon: #00fff2; --up-green: #00ff88; --down-red: #ff3131; --bg-dark: #020205; --card-bg: rgba(18, 18, 25, 0.82); }
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; }
-    body { min-height: 100vh; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; overflow: hidden; color: #fff; }
-    .bg-mesh { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 20% 20%, rgba(0,255,242,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,114,255,0.15) 0%, transparent 50%); filter: blur(90px); }
-    #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; }
-    #analysis-overlay { position: absolute; inset: 0; background: var(--bg-dark); z-index: 200; border-radius: 48px; display: none; flex-direction: column; align-items: center; justify-content: center; }
-    .loader { width: 48px; height: 48px; border: 3px solid #FFF; border-bottom-color: var(--primary-neon); border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
-    @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .ana-text { margin-top: 20px; font-size: 0.8rem; letter-spacing: 4px; color: var(--primary-neon); text-transform: uppercase; }
-    .main-container { background: var(--card-bg); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); border: 1px solid rgba(255,255,255,0.12); border-radius: 48px; padding: 38px 24px 32px; width: 95%; max-width: 460px; box-shadow: 0 50px 160px rgba(0,0,0,0.85); position: relative; z-index: 10; }
-    .nav-header { text-align: center; margin-bottom: 30px; }
-    .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.52rem; font-weight: 700; letter-spacing: 5px; background: linear-gradient(90deg, #00fff2, #fff, #00fff2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0,255,242,0.5); }
-    .bot-subtitle { font-size: 0.73rem; letter-spacing: 4.5px; color: rgba(0,255,242,0.95); margin-top: 5px; text-transform: uppercase; font-weight: 500; }
-    .tabs { display: flex; background: rgba(0,0,0,0.45); border-radius: 32px; padding: 6px; margin-bottom: 28px; }
-    .tab { flex: 1; padding: 13px 0; text-align: center; font-size: 0.76rem; font-weight: 600; border-radius: 26px; cursor: pointer; transition: all 0.4s ease; }
-    .tab.active { background: rgba(255,255,255,0.13); box-shadow: 0 6px 25px rgba(0,255,242,0.3); }
-    .signal-card { background: linear-gradient(145deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.025) 100%); border-radius: 36px; padding: 42px 24px 36px; border: 1px solid rgba(255,255,255,0.13); position: relative; overflow: hidden; box-shadow: inset 0 0 40px rgba(255,255,255,0.03); }
-    .market-type { font-size: 0.69rem; color: rgba(255,255,255,0.65); letter-spacing: 4px; text-transform: uppercase; }
-    #asset-name { font-size: 1.68rem; font-weight: 800; margin: 8px 0 20px; letter-spacing: 1px; }
-    #signal-direction { font-size: 4.7rem; font-weight: 900; line-height: 1; margin: 10px 0 24px; letter-spacing: -5px; }
-    .CALL { color: var(--up-green); text-shadow: 0 0 65px rgba(0,255,136,0.85); }
-    .PUT  { color: var(--down-red);  text-shadow: 0 0 65px rgba(255,49,49,0.85); }
-    .info-row { display: flex; gap: 12px; margin-bottom: 22px; }
-    .info-box { flex: 1; background: rgba(0,0,0,0.55); padding: 16px 12px; border-radius: 22px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
-    .info-box span { display: block; font-size: 0.61rem; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 4px; }
-    .info-box b { display: block; font-size: 1.25rem; font-weight: 700; }
-    .countdown { text-align: center; font-size: 1.24rem; font-weight: 600; color: var(--primary-neon); margin: 20px 0; letter-spacing: 2.2px; }
-    .live-indicator { margin-top: 26px; text-align: center; font-size: 0.74rem; color: rgba(255,255,255,0.78); letter-spacing: 2.8px; font-weight: 500; }
-    .pulse-node { display: inline-block; width: 10px; height: 10px; background: #00fff2; border-radius: 50%; position: relative; margin-right: 9px; }
-    .pulse-node::after { content: ''; position: absolute; inset: -6px; border: 2px solid #00fff2; border-radius: 50%; animation: pulse 1.9s infinite; }
-    @keyframes pulse { to { transform: scale(3.2); opacity: 0; } }
-    .result-card { background: rgba(255,255,255,0.035); border-radius: 34px; padding: 28px 22px; border: 1px solid rgba(255,255,255,0.1); min-height: 410px; }
-    .result-card h3 { text-align: center; font-size: 0.87rem; color: rgba(255,255,255,0.82); margin-bottom: 22px; letter-spacing: 2.2px; }
-    .accuracy-box { background: linear-gradient(145deg, rgba(0,255,136,0.1), rgba(0,0,0,0.45)); border: 1px solid rgba(0,255,136,0.25); border-radius: 28px; padding: 20px 0; text-align: center; margin-bottom: 26px; }
-    #overall-accuracy { font-size: 2.65rem; font-weight: 800; color: #888; }
-    .trade-item { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.09); border-radius: 24px; padding: 17px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-    .trade-left { flex: 1; }
-    .trade-asset { font-size: 0.96rem; font-weight: 600; }
-    .trade-info { font-size: 0.79rem; color: rgba(255,255,255,0.6); margin-top: 3px; }
-    .trade-signal { font-size: 1.28rem; font-weight: 800; }
-    .action-buttons { display: flex; gap: 12px; }
-    .win-btn, .loss-btn { padding: 9px 26px; border-radius: 30px; font-weight: 700; font-size: 0.84rem; cursor: pointer; }
-    .win-btn  { background: rgba(0,255,136,0.22); color: var(--up-green); border: 1px solid rgba(0,255,136,0.4); }
-    .loss-btn { background: rgba(255,49,49,0.22); color: var(--down-red); border: 1px solid rgba(255,49,49,0.4); }
-    .result-marked { font-size: 1.12rem; font-weight: 700; padding: 7px 24px; border-radius: 30px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TANVIR EXE | ADMIN PANEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030304;
+            background-image: 
+                radial-gradient(circle at 50% 120%, #3d0b0b 0%, #030304 60%),
+                radial-gradient(circle at 10% 10%, #1a0505 0%, transparent 20%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .admin-container {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(15, 10, 10, 0.98);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            border-top: 3px solid #ff4757;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 71, 87, 0.5);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 15px;
+            margin-bottom: 40px;
+            background: rgba(255, 71, 87, 0.03);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 71, 87, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-size: 12px;
+            color: #ff4757;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+        }
+
+        .input-box {
+            background: rgba(20, 10, 10, 0.9);
+            border: 1px solid #441111;
+            padding: 14px;
+            color: #fff;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            transition: 0.3s;
+        }
+
+        .input-box:focus {
+            border-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.2);
+        }
+
+        .add-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            align-self: flex-end;
+            height: 48px;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+        }
+
+        .logs-section {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            color: #ff4757;
+            padding: 15px;
+            background: rgba(255, 71, 87, 0.05);
+            text-transform: uppercase;
+            font-size: 13px;
+            border-bottom: 2px solid #331111;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #221111;
+            color: #ddd;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: 50%;
+            color: #ff4757;
+            transition: 0.2s;
+            font-size: 18px;
+            margin: 0 auto;
+        }
+
+        .icon-btn:hover {
+            background: #ff4757;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #0f0a0a;
+            border: 1px solid #ff4757;
+            border-radius: 12px;
+            padding: 30px;
+            width: 350px;
+            box-shadow: 0 0 40px rgba(255, 71, 87, 0.4);
+        }
+
+        .modal-title {
+            font-family: 'Rajdhani';
+            color: #ff4757;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .modal-input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .modal-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: #ff4757;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .modal-btn.secondary {
+            background: transparent;
+            border: 1px solid #331111;
+            color: #888;
+        }
+
+        .modal-btn.delete {
+            background: transparent;
+            border: 1px solid #ff4757;
+            color: #ff4757;
+        }
+
+        #notification {
+            position: fixed;
+            top: 30px;
+            right: -350px;
+            background: #0f0a0a;
+            color: #fff;
+            border-left: 4px solid #ff4757;
+            padding: 18px 30px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3000;
+        }
+
+        #notification.show { right: 30px; }
+    </style>
 </head>
-<body>
-<div class="bg-mesh"></div>
-<div id="particles-js"></div>
-<div class="main-container">
-  <div id="analysis-overlay"><span class="loader"></span><div class="ana-text" id="status-text">ANALYSING...</div></div>
-  <div class="nav-header"><div class="brand-title">TANVIR EXE</div><div class="bot-subtitle">QUOTEX LIVE SIGNAL BOT</div></div>
-  <div class="tabs"><div class="tab active" onclick="switchTab(0)">CURRENT SIGNAL</div><div class="tab" onclick="switchTab(1)">TRADE RESULT</div><div class="tab" onclick="switchTab(2)">LAST SIGNALS</div></div>
-  <div id="tab-0">
-    <div class="signal-card">
-      <div class="market-type">QUOTEX • LIVE SIGNAL</div>
-      <h2 id="asset-name">WAITING...</h2>
-      <div id="signal-direction">WAIT</div>
-      <div class="info-row">
-        <div class="info-box"><span>TIMEFRAME</span><b>M1</b></div>
-        <div class="info-box"><span>SIGNAL TIME</span><b id="signal-time">00:00</b></div>
-        <div class="info-box"><span>CONFIDENCE</span><b id="confidence-level" style="color:#00ff88;">0%</b></div>
-      </div>
-      <div id="trade-countdown" class="countdown">Trade in: <span id="trade-timer">00:00</span></div>
-      <div id="expiry-countdown" class="countdown" style="display:none; color:#ffcc00;">Expiry in: <span id="expiry-timer">00:00</span></div>
-      <div class="live-indicator"><span class="pulse-node"></span>QUOTEX LIVE SIGNAL BOT</div>
+<body onload="setDefaultDate(); loadExistingUIDs()">
+
+<div id="notification">Action Success</div>
+
+<div class="admin-container">
+    <h1 class="title">TANVIR EXE CONTROL</h1>
+
+    <div class="input-grid">
+        <div class="form-group">
+            <label>Authentication UID</label>
+            <input type="text" id="uidInput" class="input-box" placeholder="EX : 1757453232">
+        </div>
+        <div class="form-group">
+            <label>Expiry Schedule</label>
+            <input type="date" id="dateInput" class="input-box">
+        </div>
+        <button class="add-btn" onclick="addUid()">Register</button>
+        <button class="add-btn" onclick="directRemoveUid()">REMOVE</button>
+            </div>
+
+    <div class="logs-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>Target UID</th>
+                    <th>Status / Expiry</th>
+                    <th style="text-align: center;">Action</th>
+                    <th style="text-align: center;">Added By</th>
+                </tr>
+            </thead>
+            <tbody id="logTable"></tbody>
+        </table>
     </div>
-  </div>
-  <div id="tab-1" style="display:none;"><div class="result-card"><h3>TRADE HISTORY</h3><div class="accuracy-box"><div id="overall-accuracy">0%</div></div><div id="result-list"></div></div></div>
-  <div id="tab-2" style="display:none;"><div class="result-card"><h3>LAST SIGNALS</h3><div id="last-signals-list"></div></div></div>
 </div>
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <h3 class="modal-title">UPDATE ACCESS</h3>
+        
+        <div class="modal-input-group">
+            <label>Edit UID</label>
+            <input type="text" id="editUidBox" class="input-box" style="width:100%; margin-top:5px;">
+        </div>
+
+        <div class="modal-input-group">
+            <label>Edit Expiry</label>
+            <input type="date" id="editDateBox" class="input-box" style="width:100%; margin-top:5px;">
+        </div>
+
+        <button class="modal-btn" onclick="saveChanges()">SAVE UPDATES</button>
+        <button class="modal-btn delete" onclick="triggerDelete()">DELETE ACCESS</button>
+        <button class="modal-btn secondary" onclick="closeModal()">CANCEL</button>
+    </div>
+</div>
+
 <script>
-  particlesJS('particles-js', { particles: { number: { value: 70 }, color: { value: '#00fff2' }, opacity: { value: 0.28 }, size: { value: 1.9 }, line_linked: { enable: true, distance: 145, color: '#00fff2', opacity: 0.12 } }, retina_detect: true });
-  
-  let curSignal = JSON.parse(localStorage.getItem('tanvir_curSignal')) || null;
-  let wins = parseInt(localStorage.getItem('tanvir_wins')) || 0;
-  let total = parseInt(localStorage.getItem('tanvir_total')) || 0;
-  let history = JSON.parse(localStorage.getItem('tanvir_history')) || [];
-  let isPendingResult = localStorage.getItem('tanvir_pending') === 'true';
+(function () {
+  'use strict';
+  function isEditableTarget(el) {
+    if (!el || el.nodeType !== 1) return false;
+    const tag = el.tagName;
+    if (tag === 'TEXTAREA') return true;
+    if (tag === 'INPUT') {
+      const t = (el.type || '').toLowerCase();
+      return !['button', 'checkbox', 'radio', 'submit', 'reset', 'file', 'hidden'].includes(t);
+    }
+    return el.isContentEditable === true;
+  }
+  function stop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+  var DEVTOOL_CODES = { KeyI: 1, KeyJ: 1, KeyC: 1, KeyK: 1, KeyM: 1, KeyP: 1, KeyE: 1 };
+  document.addEventListener('keydown', function (e) {
+      if (isEditableTarget(e.target)) {
+        var k = (e.key || '').toLowerCase();
+        if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a'].includes(k)) return;
+      }
+      if (e.key === 'F12' || e.keyCode === 123) return stop(e);
+      if (e.shiftKey && (e.key === 'F10' || e.code === 'F10')) return stop(e);
+      var mod = e.ctrlKey || e.metaKey;
+      var code = e.code || '';
+      if (mod && e.shiftKey && !e.altKey && DEVTOOL_CODES[code]) return stop(e);
+      if (code === 'Backquote') {
+        if (e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) return stop(e);
+        if (e.ctrlKey && !e.metaKey && e.shiftKey) return stop(e);
+      }
+      if (e.metaKey && e.altKey) {
+        if (['KeyI', 'KeyJ', 'KeyC', 'KeyU'].indexOf(code) !== -1) return stop(e);
+      }
+      if (mod && !e.shiftKey && !e.altKey) {
+        if (code === 'KeyU' || code === 'KeyS') return stop(e);
+      }
+      if (mod && e.shiftKey && code === 'KeyU') return stop(e);
+    }, true);
+  document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }, true);
+  document.addEventListener('mousedown', function (e) {
+      if (e.button === 2) {
+          e.preventDefault();
+          e.stopPropagation();
+      }
+    }, true);
+})();
 
-  async function fetchSignal() {
-    if(isPendingResult) return; 
-    const overlay = document.getElementById('analysis-overlay'), statusText = document.getElementById('status-text');
-    overlay.style.display = 'flex';
-    statusText.innerText = "SCANNING...";
+    let database = [];
+    let currentSelectedIndex = null;
 
-    try {
-        const res = await fetch('/api/fetch');
-        const data = await res.json();
-        if(data.asset) {
-            curSignal = data;
-            localStorage.setItem('tanvir_curSignal', JSON.stringify(data));
-            updateUI(data);
-            overlay.style.display = 'none';
-            startTradeCountdown(data.time);
-        } else {
-            overlay.style.display = 'none';
-            document.getElementById('asset-name').innerText = "NO SIGNAL";
-            document.getElementById('signal-direction').innerText = "WAIT";
-            document.getElementById('trade-timer').innerText = "00:00";
-            setTimeout(fetchSignal, 5000);
+    function setDefaultDate() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dateInput').value = today;
+    }
+
+    function showNotify(msg) {
+        const n = document.getElementById('notification');
+        n.innerText = msg;
+        n.classList.add('show');
+        setTimeout(() => n.classList.remove('show'), 3000);
+    }
+
+    async function addUid() {
+        const uid = document.getElementById('uidInput').value.trim();
+        const date = document.getElementById('dateInput').value;
+
+        if (uid.length < 9 || uid.length > 15) {
+            showNotify("Invalid UID Length");
+            return;
         }
-    } catch(e) { setTimeout(fetchSignal, 5000); }
-  }
-
-  function updateUI(data) {
-    document.getElementById('asset-name').innerText = data.asset;
-    const dir = document.getElementById('signal-direction');
-    dir.innerText = data.dir; dir.className = data.dir;
-    document.getElementById('signal-time').innerText = data.time;
-    document.getElementById('confidence-level').innerText = "94%";
-  }
-
-  function startTradeCountdown(timeStr) {
-    const [h, m] = timeStr.split(':').map(Number);
-    const int = setInterval(() => {
-        const now = new Date();
-        const target = new Date();
-        target.setHours(h, m, 0, 0);
-        let rem = Math.floor((target - now) / 1000);
-        if (rem < -60) { clearInterval(int); fetchSignal(); return; }
-        if (rem <= 0) { 
-            clearInterval(int); 
-            document.getElementById('trade-countdown').style.display = 'none'; 
-            startExpiry(target.getTime()); 
-            return; 
+        if (!date) {
+            showNotify("Select Expiry Date");
+            return;
         }
-        document.getElementById('trade-timer').innerText = `${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`;
-    }, 1000);
-  }
 
-  function startExpiry(startTime) {
-    const expRow = document.getElementById('expiry-countdown'); expRow.style.display = 'block';
-    const target = startTime + 60000;
-    const int = setInterval(() => {
-        const now = Date.now();
-        let rem = Math.floor((target - now) / 1000);
-        if (rem <= 0) { clearInterval(int); expRow.style.display = 'none'; showResultOption(); return; }
-        document.getElementById('expiry-timer').innerText = `00:${rem.toString().padStart(2,'0')}`;
-    }, 1000);
-  }
+        // Calculate days from today to selected date
+        const today = new Date();
+        const expiryDate = new Date(date);
+        const days = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+        
+        if (days <= 0) {
+            showNotify("Expiry date must be in the future");
+            return;
+        }
 
-  function showResultOption() {
-    isPendingResult = true;
-    localStorage.setItem('tanvir_pending', 'true');
-    renderResultList();
-    switchTab(1);
-  }
+        try {
+            const response = await fetch('/add_uid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ uid, days })
+            });
 
-  window.markAndNext = function(el, isWin) {
-    total++; if(isWin) wins++;
-    localStorage.setItem('tanvir_total', total);
-    localStorage.setItem('tanvir_wins', wins);
-    history.unshift({...curSignal, res: isWin ? 'WIN' : 'LOSS'});
-    localStorage.setItem('tanvir_history', JSON.stringify(history));
-    isPendingResult = false;
-    localStorage.setItem('tanvir_pending', 'false');
-    localStorage.removeItem('tanvir_curSignal');
-    updateStats(); renderLast(); renderResultList();
-    setTimeout(() => { switchTab(0); document.getElementById('trade-countdown').style.display = 'block'; fetchSignal(); }, 1000);
-  }
+            const result = await response.json();
 
-  function updateStats() {
-    const acc = total === 0 ? 0 : Math.round((wins/total)*100);
-    const accEl = document.getElementById('overall-accuracy');
-    accEl.innerText = acc + "%"; accEl.style.color = acc >= 80 ? "#00ff88" : "#ff3131";
-  }
+            if (result.success) {
+                database.push({ uid, date, added_by: result.admin_user || 'Unknown' });
+                document.getElementById('uidInput').value = '';
+                setDefaultDate();
+                renderTable();
+                showNotify("UID Registered");
+            } else {
+                showNotify("Failed to add UID");
+            }
+        } catch (error) {
+            showNotify("Connection Error");
+        }
+    }
 
-  function renderResultList() {
-    const list = document.getElementById('result-list');
-    if(isPendingResult && curSignal) {
-        list.innerHTML = `<div class="trade-item"><div class="trade-left"><div class="trade-signal ${curSignal.dir}">${curSignal.dir}</div><div class="trade-info">${curSignal.asset} • ${curSignal.time}</div></div><div class="action-buttons"><div onclick="markAndNext(this, true)" class="win-btn">WIN</div><div onclick="markAndNext(this, false)" class="loss-btn">LOSS</div></div></div>`;
-    } else { list.innerHTML = ""; }
-  }
+    function renderTable() {
+        const tbody = document.getElementById('logTable');
+        tbody.innerHTML = '';
+        database.forEach((item, index) => {
+            const row = `<tr>
+                <td>${item.uid}</td>
+                <td>${item.date}</td>
+                <td style="text-align: center;">
+                    <button class="icon-btn" onclick="openEditModal(${index})">⚙</button>
+                </td>
+                <td style="text-align: center; font-size: 12px; color: #888;">
+                    ${item.added_by ? `Added by: ${item.added_by}` : ''}
+                </td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
 
-  function renderLast() {
-    document.getElementById('last-signals-list').innerHTML = history.map(s => `<div class="trade-item"><div class="trade-left"><div class="trade-asset">${s.asset}</div><div class="trade-info">${s.time}</div></div><div style="text-align:right;"><div class="trade-signal ${s.dir}">${s.dir}</div><div style="color:${s.res=='WIN'?'#00ff88':'#ff3131'}; font-weight:700;">${s.res}</div></div></div>`).join('');
-  }
+    function openEditModal(index) {
+        currentSelectedIndex = index;
+        document.getElementById('editUidBox').value = database[index].uid;
+        document.getElementById('editDateBox').value = database[index].date;
+        document.getElementById('modalOverlay').style.display = 'flex';
+    }
 
-  function switchTab(n) {
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===n));
-    document.getElementById('tab-0').style.display = n===0 ? 'block' : 'none';
-    document.getElementById('tab-1').style.display = n===1 ? 'block' : 'none';
-    document.getElementById('tab-2').style.display = n===2 ? 'block' : 'none';
-  }
+    function closeModal() {
+        document.getElementById('modalOverlay').style.display = 'none';
+    }
 
-  window.onload = () => {
-    updateStats(); renderLast();
-    if(isPendingResult && curSignal) { updateUI(curSignal); showResultOption(); }
-    else if(curSignal) { updateUI(curSignal); startTradeCountdown(curSignal.time); }
-    else { fetchSignal(); }
-  };
+    async function saveChanges() {
+        const newUid = document.getElementById('editUidBox').value.trim();
+        const newDate = document.getElementById('editDateBox').value;
+
+        if (newUid.length < 9 || newUid.length > 15) {
+            showNotify("UID must be 9-15 characters long");
+            return;
+        }
+        if (!newDate) {
+            showNotify("Select Expiry Date");
+            return;
+        }
+
+        // Calculate days from today to selected date
+        const today = new Date();
+        const expiryDate = new Date(newDate);
+        const days = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+        
+        if (days <= 0) {
+            showNotify("Expiry date must be in the future");
+            return;
+        }
+
+        try {
+            const response = await fetch('/edit_uid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ uid: newUid, days })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                database[currentSelectedIndex].uid = newUid;
+                database[currentSelectedIndex].date = newDate;
+                renderTable();
+                showNotify("✅ Data Updated Successfully");
+                closeModal();
+            } else {
+                showNotify("❌ " + (result.error || "Failed to update UID"));
+            }
+        } catch (error) {
+            showNotify("Connection Error");
+        }
+    }
+
+    async function triggerDelete() {
+        try {
+            const uid = database[currentSelectedIndex].uid;
+            
+            if (!confirm(`⚠️ Are you sure you want to remove UID "${uid}"?\n\nThis action cannot be undone.`)) {
+                return;
+            }
+            
+            const response = await fetch('/remove_uid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ uid })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                database.splice(currentSelectedIndex, 1);
+                renderTable();
+                showNotify("✅ Access Deleted Successfully");
+                closeModal();
+            } else {
+                showNotify("❌ " + (result.error || "Failed to delete UID"));
+            }
+        } catch (error) {
+            showNotify("❌ Connection Error");
+        }
+    }
+
+    async function directRemoveUid() {
+        const uid = document.getElementById('uidInput').value.trim();
+        
+        if (!uid) {
+            showNotify("⚠️ Please enter UID to remove");
+            return;
+        }
+        
+        if (uid.length < 9 || uid.length > 15) {
+            showNotify("⚠️ Invalid UID Length (9-15 characters required)");
+            return;
+        }
+        
+        try {
+            const response = await fetch('/remove_uid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ uid })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Remove from local database if exists
+                const index = database.findIndex(item => item.uid === uid);
+                if (index !== -1) {
+                    database.splice(index, 1);
+                    renderTable();
+                }
+                document.getElementById('uidInput').value = '';
+                showNotify("✅ UID Removed Successfully from Server");
+            } else {
+                showNotify("❌ " + (result.error || "Failed to remove UID"));
+            }
+        } catch (error) {
+            showNotify("❌ Connection Error");
+        }
+    }
+
+    async function removeAllUids() {
+        if (database.length === 0) {
+            showNotify("No UIDs to remove");
+            return;
+        }
+        
+        if (!confirm(`Are you sure you want to remove all ${database.length} UIDs?`)) {
+            return;
+        }
+        
+        try {
+            // Remove each UID from server
+            const removePromises = database.map(item => 
+                fetch('/remove_uid', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ uid: item.uid })
+                })
+            );
+            
+            await Promise.all(removePromises);
+            
+            // Clear local database after successful server removal
+            database = [];
+            renderTable();
+            showNotify("✅ All UIDs Removed Successfully");
+        } catch (error) {
+            showNotify("❌ Connection Error");
+        }
+    }
+
+    // Load existing UIDs when page loads
+    async function loadExistingUIDs() {
+        try {
+            const response = await fetch('/get_existing_uids');
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                database = result.data.map(item => ({
+                    uid: item.account_id || item.uid,
+                    date: item.added_at ? new Date(item.added_at).toISOString().split('T')[0] : item.expiry_date || item.date,
+                    added_by: item.adder_admin || item.added_by || 'Unknown'
+                }));
+                renderTable();
+                console.log('Loaded existing UIDs:', database);
+            }
+        } catch (error) {
+            console.error('Failed to load existing UIDs:', error);
+        }
+    }
 </script>
+
 </body>
 </html>

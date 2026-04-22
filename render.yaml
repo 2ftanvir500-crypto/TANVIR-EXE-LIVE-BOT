@@ -1,0 +1,26 @@
+services:
+  # Web Service
+  - type: web
+    name: tanvir-admin-panel
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT bot:app
+    healthCheckPath: /health
+    autoDeploy: true
+    
+    # Environment Variables
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: FLASK_ENV
+        value: production
+      - key: PASTEBIN_RAW_URL
+        value: https://pastebin.com/raw/iaMqqsEk
+      - key: API_BASE_URL
+        value: http://46.250.239.109:6020
+      - key: DISCORD_CHANNEL_ID
+        value: 1482836987873591426
+
+# Render Configuration
+version: "1"
